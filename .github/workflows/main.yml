@@ -1,0 +1,25 @@
+name: CICD
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  apk:
+    name: Generate APK
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - name: Build debug APK
+        run: bash ./gradlew assembleDebug
+      - name: Upload APK
+        uses: actions/upload-artifact@v2
+        with:
+          name: bluboy_debug_build.apk
+          path: app/build/outputs/apk/live/debug/app-live-debug.apk
